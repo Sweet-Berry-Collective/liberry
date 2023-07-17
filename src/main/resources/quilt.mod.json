@@ -1,25 +1,25 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "com.example",
-		"id": "example_mod",
+		"group": "dev.sweetberry",
+		"id": "liberry",
 		"version": "${version}",
 		"metadata": {
-			"name": "Mod Name",
-			"description": "A short description of your mod.",
+			"name": "liberry",
+			"description": "Common code for Sweet Berry Collective's mods",
 			"contributors": {
-				"Your name here": "Owner"
+				"Octal": "Owner"
 			},
 			"contact": {
-				"homepage": "https://example.com/",
-				"issues": "https://github.com/QuiltMC/quilt-template-mod/issues",
-				"sources": "https://github.com/QuiltMC/quilt-template-mod"
+				"homepage": "https://sweetberry.dev/",
+				"issues": "https://github.com/Sweet-Berry-Collective/liberry/issues",
+				"sources": "https://github.com/Sweet-Berry-Collective/liberry"
 			},
-			"icon": "assets/example_mod/icon.png"
+			"icon": "assets/liberry/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.example.example_mod.ExampleMod"
+			"init": "dev.sweetberry.liberry.LiberryMod"
 		},
 		"depends": [
 			{
@@ -36,5 +36,5 @@
 			}
 		]
 	},
-	"mixin": "example_mod.mixins.json"
+	"mixin": "liberry.mixins.json"
 }
