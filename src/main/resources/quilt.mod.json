@@ -19,12 +19,13 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "dev.sweetberry.liberry.LiberryMod"
+			"init": "dev.sweetberry.liberry.Liberry",
+			"client_init": "dev.sweetberry.liberry.client.LiberryClient"
 		},
 		"depends": [
 			{
 				"id": "quilt_loader",
-				"versions": ">=0.19.1"
+				"versions": ">=0.20.0-"
 			},
 			{
 				"id": "quilted_fabric_api",
@@ -35,6 +36,5 @@
 				"versions": ">=1.20"
 			}
 		]
-	},
-	"mixin": "liberry.mixins.json"
+	}
 }
