@@ -17,15 +17,26 @@ public class DataGenerator {
 
 	public List<RegistrationContext> registrationContexts = new ArrayList<>();
 	public List<ResourceContext> resourceContexts = new ArrayList<>();
+	public List<String> exclusions = new ArrayList<>();
 
 	public DataGenerator(Identifier id, InstantiationFunction function) {
 		this.function = function;
 		this.id = id;
 	}
 
+	public void exclude(String modid) {
+		exclusions.add(modid);
+	}
+
 	public void apply(Identifier baseId, Map<String, ?> metadata) {
-		if (LiberryConfig.isExcluded(id, baseId.getNamespace()))
+		if (LiberryConfig.isExcluded(id, baseId.getNamespace())) {
+			LiberryConfig.debugLog("Excluding id "+baseId+" for "+id+" due to config");
 			return;
+		}
+		if (exclusions.contains(baseId.getNamespace())) {
+			LiberryConfig.debugLog("Excluding id "+baseId+" for "+id+" due to mod author request");
+			return;
+		}
 		var registrationContext = new RegistrationContext();
 		var resourceContext = new ResourceContext();
 		function.onInstantiate(baseId, metadata, registrationContext, resourceContext);

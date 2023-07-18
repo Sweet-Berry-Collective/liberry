@@ -1,6 +1,7 @@
 package dev.sweetberry.liberry.datagen;
 
 import dev.sweetberry.liberry.Liberry;
+import dev.sweetberry.liberry.config.LiberryConfig;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.quiltmc.qsl.resource.loader.api.InMemoryResourcePack;
@@ -14,11 +15,11 @@ import java.util.Map;
 public class ResourceContext {
 	public List<DatagenResource> resources = new ArrayList<>();
 
-	void string(ResourceType type, Identifier path, String value) {
+	public void string(ResourceType type, Identifier path, String value) {
 		resources.add(new BasicStringResource(type, path, value));
 	}
 
-	void template(ResourceType type, Identifier template, Identifier path, Map<String, String> properties) {
+	public void template(ResourceType type, Identifier template, Identifier path, Map<String, String> properties) {
 		resources.add(new TemplatedResource(type, path, template, properties));
 	}
 
@@ -41,6 +42,8 @@ public class ResourceContext {
 			ResourcePackRegistrationContext context,
 			InMemoryResourcePack pack
 		) {
+			var path = this.path.extendPath(".json");
+			LiberryConfig.debugLog(path + " -> \n" + data);
 			pack.putText(type(), path, data);
 		}
 	}
@@ -54,13 +57,14 @@ public class ResourceContext {
 		@Override
 		public void applyTo(ResourcePackRegistrationContext context, InMemoryResourcePack pack) {
 			try {
-				var templateString = new String(context.resourceManager().open(template).readAllBytes());
+				var templateString = new String(context.resourceManager().open(template.extendPath(".json")).readAllBytes());
 				for (var key : properties.keySet())
 					templateString = templateString.replace("${" + key + "}", properties.get(key));
+				var path = this.path.extendPath(".json");
+				LiberryConfig.debugLog(path + " -> \n" + templateString);
 				pack.putText(type(), path, templateString);
 			} catch (IOException err) {
-				Liberry.logger.error("Unable to find template: " + template.toString());
-				Liberry.logger.atError().setCause(err).log();
+				Liberry.logger.atError().setCause(err).log("Unable to find template: " + template);
 			}
 		}
 	}

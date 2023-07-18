@@ -1,0 +1,39 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "dev.sweetberry",
+		"id": "liberry_test",
+		"version": "${version}",
+		"metadata": {
+			"name": "liberry test",
+			"description": "owo uwu nya",
+			"contributors": {
+				"Octal": "Owner"
+			},
+			"contact": {
+				"homepage": "https://sweetberry.dev/",
+				"issues": "https://github.com/Sweet-Berry-Collective/liberry/issues",
+				"sources": "https://github.com/Sweet-Berry-Collective/liberry"
+			},
+			"icon": "assets/liberry_test/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"init": "dev.sweetberry.liberry.test.LiberryTestMod"
+		},
+		"depends": [
+			{
+				"id": "quilt_loader",
+				"versions": ">=0.20.0-"
+			},
+			{
+				"id": "quilted_fabric_api",
+				"versions": ">=7.0.2"
+			},
+			{
+				"id": "minecraft",
+				"versions": ">=1.20"
+			}
+		]
+	}
+}

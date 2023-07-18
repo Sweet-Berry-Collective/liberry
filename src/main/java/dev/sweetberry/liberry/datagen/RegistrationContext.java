@@ -15,6 +15,12 @@ public class RegistrationContext {
 		return Registry.register(registry, id, value);
 	}
 
+	public <TValue> TValue register(Registry<TValue> registry, Identifier id, TValue value, boolean shouldBeTransparent) {
+		var entry = new RegistryEntryHolder<>(id, value, shouldBeTransparent);
+		entries.add(entry);
+		return Registry.register(registry, id, value);
+	}
+
 	public static class RegistryEntryHolder<TValue> {
 		public final Identifier id;
 		public final TValue value;

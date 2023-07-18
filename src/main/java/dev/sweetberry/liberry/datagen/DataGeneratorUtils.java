@@ -39,6 +39,7 @@ public class DataGeneratorUtils {
 						})
 				)
 			);
+			context.addResourcePack(pack);
 		});
 	}
 }
