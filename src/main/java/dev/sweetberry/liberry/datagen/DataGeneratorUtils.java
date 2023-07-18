@@ -30,9 +30,9 @@ public class DataGeneratorUtils {
 	private static void registerReloader(ResourceType type, InMemoryResourcePack pack) {
 		ResourceLoader.get(type).getRegisterDefaultResourcePackEvent().register(context -> {
 			pack.clearResources();
-			REGISTRY.forEach(
-				generator -> generator.resourceContexts.forEach(
-					resourceContext -> resourceContext.resources
+			REGISTRY.forEach(generator ->
+				generator.resourceContexts.forEach(resourceContext ->
+					resourceContext.resources
 						.forEach(it -> {
 							if (it.type() == type)
 								it.applyTo(context, pack);
