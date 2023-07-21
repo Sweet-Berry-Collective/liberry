@@ -2,6 +2,9 @@ package dev.sweetberry.liberry.test;
 
 import dev.sweetberry.liberry.datagen.DataGenerator;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
+import dev.sweetberry.liberry.datagen.blockstate.BlockStateModel;
+import dev.sweetberry.liberry.datagen.blockstate.VariantBlockState;
+import dev.sweetberry.liberry.datagen.tags.TagData;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
@@ -39,10 +42,13 @@ public class LiberryTestMod implements ModInitializer {
 					}
 				}
 				""");
+			var block_model_id = "liberry_test:block/"+block_id.getPath();
+			resourceContext.blockstate(blockstate_id, new VariantBlockState().with("", new BlockStateModel(block_model_id, false)));
 			var map = new HashMap<String, String>();
-			map.put("model_id", "liberry_test:block/"+block_id.getPath());
-			resourceContext.template(ResourceType.CLIENT_RESOURCES, new Identifier("liberry_test", "template/blockstate"), blockstate_id, map);
+			map.put("model_id", block_model_id);
 			resourceContext.template(ResourceType.CLIENT_RESOURCES, new Identifier("liberry_test", "template/item_model"), item_model_id, map);
+
+			TagData.put("blocks/mineable/pickaxe", block_id);
 		});
 
 		Registry.register(DataGeneratorUtils.REGISTRY, id, generator);

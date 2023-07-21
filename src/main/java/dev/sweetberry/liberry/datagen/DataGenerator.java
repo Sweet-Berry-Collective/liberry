@@ -29,12 +29,12 @@ public class DataGenerator {
 	}
 
 	public void apply(Identifier baseId, Map<String, ?> metadata) {
-		if (LiberryConfig.isExcluded(id, baseId.getNamespace())) {
-			LiberryConfig.debugLog("Excluding id "+baseId+" for "+id+" due to config");
+		if (Liberry.isExcluded(id, baseId.getNamespace())) {
+			Liberry.debugLog("Excluding id "+baseId+" for "+id+" due to config");
 			return;
 		}
 		if (exclusions.contains(baseId.getNamespace())) {
-			LiberryConfig.debugLog("Excluding id "+baseId+" for "+id+" due to mod author request");
+			Liberry.debugLog("Excluding id "+baseId+" for "+id+" due to mod author request");
 			return;
 		}
 		var registrationContext = new RegistrationContext();
