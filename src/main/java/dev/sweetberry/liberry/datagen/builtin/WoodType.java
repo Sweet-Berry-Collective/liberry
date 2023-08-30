@@ -6,9 +6,16 @@ import dev.sweetberry.liberry.content.world.LiberrySaplingGenerator;
 import dev.sweetberry.liberry.datagen.*;
 import dev.sweetberry.liberry.datagen.blockstate.BlockStateModel;
 import dev.sweetberry.liberry.datagen.blockstate.VariantBlockState;
+import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeRegistry;
 import net.minecraft.block.*;
+import net.minecraft.block.sapling.SaplingBlock;
+import net.minecraft.block.sign.CeilingHangingSignBlock;
+import net.minecraft.block.sign.SignBlock;
+import net.minecraft.block.sign.WallHangingSignBlock;
+import net.minecraft.block.sign.WallSignBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.HangingSignItem;
 import net.minecraft.item.SignItem;
@@ -130,8 +137,8 @@ public class WoodType {
 		final var singleStack = new QuiltItemSettings().maxCount(1);
 		final var isFungus = fungusBaseBlock != null;
 
-		var blockSetType = BlockSetTypeRegistry.registerWood(baseId);
-		var signType = WoodTypeRegistry.register(baseId, blockSetType);
+		var blockSetType = new BlockSetTypeBuilder().register(baseId);
+		var signType = new WoodTypeBuilder().register(baseId, blockSetType);
 
 		var planks = context.registerBlockWithItem(transformId(baseId, "${orig}_planks"), new Block(baseBlock), baseItem);
 		context.registerBlockWithItem(transformId(baseId, "${orig}_stairs"), new StairsBlock(planks.getDefaultState(), baseBlock), baseItem);
