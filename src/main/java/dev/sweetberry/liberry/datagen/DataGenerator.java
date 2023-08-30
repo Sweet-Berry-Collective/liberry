@@ -5,6 +5,7 @@ import dev.sweetberry.liberry.config.LiberryConfig;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,24 +29,25 @@ public class DataGenerator {
 		exclusions.add(modid);
 	}
 
-	public void apply(Identifier baseId, Map<String, ?> metadata) {
+	public @Nullable ContextHolder apply(Identifier baseId, Map<String, ?> metadata) {
 		if (Liberry.isExcluded(id, baseId.getNamespace())) {
 			Liberry.debugLog("Excluding id "+baseId+" for "+id+" due to config");
-			return;
+			return null;
 		}
 		if (exclusions.contains(baseId.getNamespace())) {
 			Liberry.debugLog("Excluding id "+baseId+" for "+id+" due to mod author request");
-			return;
+			return null;
 		}
 		var registrationContext = new RegistrationContext();
 		var resourceContext = new ResourceContext();
 		function.onInstantiate(baseId, metadata, registrationContext, resourceContext);
 		registrationContexts.add(registrationContext);
 		resourceContexts.add(resourceContext);
+		return new ContextHolder(registrationContext, resourceContext);
 	}
 
-	public void apply(Identifier id) {
-		apply(id, new HashMap<>());
+	public @Nullable ContextHolder apply(Identifier id) {
+		return apply(id, new HashMap<>());
 	}
 
 	@FunctionalInterface
@@ -56,5 +58,9 @@ public class DataGenerator {
 			RegistrationContext registrationContext,
 			ResourceContext resourceContext
 		);
+	}
+
+	public record ContextHolder(RegistrationContext registrationContext, ResourceContext resourceContext) {
+
 	}
 }

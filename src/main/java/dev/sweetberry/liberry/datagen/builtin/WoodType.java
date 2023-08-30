@@ -12,7 +12,6 @@ import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.HangingSignItem;
 import net.minecraft.item.SignItem;
-import net.minecraft.resource.ResourceType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -34,6 +33,7 @@ public class WoodType {
 			var fungusBaseBlock = (Block)metadata.get("fungus_base_block");
 
 			registerContent(baseId, wood, bark, sounds, createBoat, fungusBaseBlock, registrationContext);
+			registerClientData(baseId, createBoat, fungusBaseBlock != null, resourceContext);
 		}
 	));
 
@@ -61,11 +61,12 @@ public class WoodType {
 		Template.MODEL_DELEGATE.apply(context, transformId(baseId, "models/item/${orig}_planks"),
 			"parent", planks_id
 		);
+
 		id = transformId(baseId, "block/${orig}_stairs");
 		Template.BLOCKSTATE_STAIRS.apply(context, transformId(baseId, "blockstates/${orig}_stairs"),
 			"id", id.toString()
 		);
-		id = id.withPrefix("model/");
+		id = id.withPrefix("models/");
 		Template.MODEL_STAIRS.apply(context, id,
 			"bottom", planks_id,
 			"side", planks_id,
@@ -81,7 +82,32 @@ public class WoodType {
 			"side", planks_id,
 			"top", planks_id
 		);
-		// TODO: Other parts
+		Template.MODEL_DELEGATE.apply(context, transformId(baseId, "models/item/${orig}_stairs"),
+			"parent", transformId(baseId, "block/${orig}_stairs").toString()
+		);
+
+		id = transformId(baseId, "block/${orig}_slab");
+		Template.BLOCKSTATE_SLAB.apply(context, transformId(baseId, "blockstates/${orig}_slab"),
+			"half", id.toString(),
+			"full", planks_id
+		);
+		id = id.withPrefix("models/");
+		Template.MODEL_SLAB.apply(context, id,
+			"bottom", planks_id,
+			"side", planks_id,
+			"top", planks_id
+		);
+		Template.MODEL_SLAB_TOP.apply(context, id.extendPath("_top"),
+			"bottom", planks_id,
+			"side", planks_id,
+			"top", planks_id
+		);
+		Template.MODEL_DELEGATE.apply(context, transformId(baseId, "models/item/${orig}_slab"),
+			"parent", transformId(baseId, "block/${orig}_slab").toString()
+		);
+
+
+		// TODO: button, pressure plate, log, wood, door, trapdoor, signs, hanging signs, fence, fence gate, leaves, sapling
 	}
 
 	private static void registerContent(
@@ -126,7 +152,7 @@ public class WoodType {
 
 		var hanging_sign = context.registerBlock(transformId(baseId, "hanging_${orig}_sign"), new CeilingHangingSignBlock(hanging, signType));
 		var hanging_wall_sign = context.registerBlock(transformId(baseId, "hanging_${orig}_wall_sign"), new WallHangingSignBlock(hanging, signType));
-		context.registerItem(transformId(baseId, "${orig}_sign"), new HangingSignItem(hanging_sign, hanging_wall_sign, baseItem));
+		context.registerItem(transformId(baseId, "${orig}_hanging_sign"), new HangingSignItem(hanging_sign, hanging_wall_sign, baseItem));
 
 		context.registerBlockWithItem(transformId(baseId, "${orig}_fence"), new FenceBlock(baseBlock), baseItem);
 		context.registerBlockWithItem(transformId(baseId, "${orig}_fence_gate"), new FenceGateBlock(baseBlock, signType), baseItem);
@@ -199,7 +225,7 @@ public class WoodType {
 		return baseId.withPath(type.replace("${orig}", baseId.getPath()));
 	}
 
-	public static void create(
+	public static DataGenerator.ContextHolder create(
 		Identifier baseId,
 		MapColor wood,
 		MapColor bark,
@@ -214,6 +240,6 @@ public class WoodType {
 		metadata.put("create_boat", createBoat);
 		metadata.put("fungus_base_block", fungusBaseBlock);
 
-		GENERATOR.apply(baseId, metadata);
+		return GENERATOR.apply(baseId, metadata);
 	}
 }

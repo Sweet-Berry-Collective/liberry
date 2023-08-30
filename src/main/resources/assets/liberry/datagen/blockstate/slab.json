@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "${half}"
+    },
+    "type=double": {
+      "model": "${full}"
+    },
+    "type=top": {
+      "model": "${half}_top"
+    }
+  }
+}

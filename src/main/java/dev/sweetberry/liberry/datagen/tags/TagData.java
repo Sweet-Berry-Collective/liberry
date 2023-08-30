@@ -29,7 +29,12 @@ public class TagData {
 		for (var type : tags.keySet()) {
 			var value = new JsonObject();
 			value.add("replace", new JsonPrimitive(false));
-			value.add("values", DataGeneratorUtils.gson.toJsonTree(tags.get(type).stream().map(Identifier::toString).toList()));
+			value.add("values", DataGeneratorUtils.gson.toJsonTree(
+				tags.get(type)
+					.stream()
+					.map(Identifier::toString)
+					.toList()
+			));
 			var id = type.withPrefix("tags/").extendPath(".json");
 			var data = DataGeneratorUtils.gson.toJson(value);
 			Liberry.debugLog(id.toString() + " ->\n" + data);

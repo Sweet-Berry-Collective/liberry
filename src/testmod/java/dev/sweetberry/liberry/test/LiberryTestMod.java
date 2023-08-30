@@ -2,22 +2,24 @@ package dev.sweetberry.liberry.test;
 
 import dev.sweetberry.liberry.datagen.DataGenerator;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
+import dev.sweetberry.liberry.datagen.Template;
 import dev.sweetberry.liberry.datagen.blockstate.BlockStateModel;
 import dev.sweetberry.liberry.datagen.blockstate.VariantBlockState;
+import dev.sweetberry.liberry.datagen.builtin.WoodType;
 import dev.sweetberry.liberry.datagen.tags.TagData;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.MapColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.ResourceType;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
-
-import java.util.HashMap;
 
 public class LiberryTestMod implements ModInitializer {
 	@Override
@@ -44,9 +46,9 @@ public class LiberryTestMod implements ModInitializer {
 				""");
 			var block_model_id = "liberry_test:block/"+block_id.getPath();
 			resourceContext.blockstate(blockstate_id, new VariantBlockState().with("", new BlockStateModel(block_model_id, false)));
-			var map = new HashMap<String, String>();
-			map.put("model_id", block_model_id);
-			resourceContext.template(ResourceType.CLIENT_RESOURCES, new Identifier("liberry_test", "template/item_model"), item_model_id, map);
+			Template.MODEL_DELEGATE.apply(resourceContext, item_model_id,
+				"parent", block_model_id
+			);
 
 			TagData.put("blocks/mineable/pickaxe", block_id);
 		});
@@ -57,5 +59,14 @@ public class LiberryTestMod implements ModInitializer {
 
 		generator.apply(new Identifier("owo", "uwu"));
 		generator.apply(new Identifier("uwu", "owo"));
+
+		WoodType.create(
+			new Identifier("liberry_test", "test_wood"),
+			MapColor.DIRT,
+			MapColor.DIAMOND,
+			BlockSoundGroup.AMETHYST_BLOCK,
+			false,
+			null
+		);
 	}
 }
