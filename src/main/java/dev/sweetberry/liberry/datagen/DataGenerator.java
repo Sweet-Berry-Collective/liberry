@@ -1,9 +1,6 @@
 package dev.sweetberry.liberry.datagen;
 
 import dev.sweetberry.liberry.Liberry;
-import dev.sweetberry.liberry.config.LiberryConfig;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 

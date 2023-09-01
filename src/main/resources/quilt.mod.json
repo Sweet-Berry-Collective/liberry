@@ -20,7 +20,8 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"init": "dev.sweetberry.liberry.Liberry",
-			"client_init": "dev.sweetberry.liberry.client.LiberryClient"
+			"client_init": "dev.sweetberry.liberry.client.LiberryClient",
+			"cardinal-components": "dev.sweetberry.liberry.component.LiberryComponents"
 		},
 		"depends": [
 			{
@@ -36,5 +37,8 @@
 				"versions": ">=1.20"
 			}
 		]
-	}
+	},
+	"cardinal_components": [
+		"liberry:entity_variants"
+	]
 }
