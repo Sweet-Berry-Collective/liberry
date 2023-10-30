@@ -2,8 +2,6 @@ package dev.sweetberry.liberry;
 
 import dev.sweetberry.liberry.config.LiberryConfig;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
-import dev.sweetberry.liberry.variant.EntityTextureVariantProvider;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
@@ -16,7 +14,6 @@ public class Liberry implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LiberryConfig.poke();
-		EntityTextureVariantProvider.registerRegistry();
 		DataGeneratorUtils.registerRegistry();
 		DataGeneratorUtils.registerReloaders();
 	}
