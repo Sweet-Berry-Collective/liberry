@@ -5,6 +5,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
@@ -38,6 +39,12 @@ public class RegistrationContext {
 
 	public <TValue> TValue register(Registry<TValue> registry, Identifier id, TValue value) {
 		var entry = new RegistryEntryHolder<>(id, value);
+		entries.add(entry);
+		return Registry.register(registry, id, value);
+	}
+
+	public <TValue> TValue register(Registry<TValue> registry, RegistryKey<TValue> id, TValue value) {
+		var entry = new RegistryEntryHolder<>(id.getValue(), value);
 		entries.add(entry);
 		return Registry.register(registry, id, value);
 	}

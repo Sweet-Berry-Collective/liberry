@@ -7,7 +7,6 @@ import net.minecraft.util.Identifier;
 import java.util.Map;
 
 public record Template(Identifier id, ResourceType type) {
-
 	/**
 	 * Properties:
 	 * <br>
@@ -81,6 +80,38 @@ public record Template(Identifier id, ResourceType type) {
 	 * - top: Texture for top
 	 * */
 	public static final Template MODEL_SLAB_TOP = new Template(Liberry.id("datagen/model/slab_top"), ResourceType.CLIENT_RESOURCES);
+
+	/**
+	 * Properties:
+	 * <br>
+	 * - id: The ID for the base model (ex: modid:block/some_block)
+	 * */
+	public static final Template BLOCKSTATE_PILLAR = new Template(Liberry.id("datagen/blockstate/pillar"), ResourceType.CLIENT_RESOURCES);
+
+	/**
+	 * Properties:
+	 * <br>
+	 * - side: Texture for side <br>
+	 * - top: Texture for top
+	 * */
+	public static final Template MODEL_PILLAR = new Template(Liberry.id("datagen/model/pillar"), ResourceType.CLIENT_RESOURCES);
+
+	/**
+	 * Properties:
+	 * <br>
+	 * - side: Texture for side <br>
+	 * - top: Texture for top
+	 * */
+	public static final Template MODEL_PILLAR_HORIZONTAL = new Template(Liberry.id("datagen/model/pillar_horizontal"), ResourceType.CLIENT_RESOURCES);
+
+	/**
+	 * Properties:
+	 * <br>
+	 * - id: The ID for the base model (ex: modid:block/some_block)
+	 * */
+	public static final Template BLOCKSTATE_BUTTON = new Template(Liberry.id("datagen/blockstate/button"), ResourceType.CLIENT_RESOURCES);
+
+
 
 	public void apply(ResourceContext context, Identifier path, String... properties) {
 		context.template(type, id, path, properties);

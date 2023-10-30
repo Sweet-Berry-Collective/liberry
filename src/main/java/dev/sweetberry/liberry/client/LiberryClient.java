@@ -1,5 +1,7 @@
 package dev.sweetberry.liberry.client;
 
+import com.terraformersmc.terraform.boat.api.TerraformBoatType;
+import com.terraformersmc.terraform.boat.api.client.TerraformBoatClientHelper;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
@@ -15,6 +17,8 @@ public class LiberryClient implements ClientModInitializer {
 				context.entries.forEach(entry -> {
 					if (entry.shouldBeTransparent && entry.value instanceof Block block)
 						BlockRenderLayerMap.put(RenderLayer.getCutout(), block);
+					if (entry.value instanceof TerraformBoatType)
+						TerraformBoatClientHelper.registerModelLayers(entry.id, false);
 				})
 			)
 		);

@@ -1,5 +1,9 @@
 package dev.sweetberry.liberry.datagen.builtin;
 
+import com.terraformersmc.terraform.boat.api.TerraformBoatType;
+import com.terraformersmc.terraform.boat.api.TerraformBoatTypeRegistry;
+import com.terraformersmc.terraform.boat.api.item.TerraformBoatItemHelper;
+import com.terraformersmc.terraform.boat.impl.item.TerraformBoatItem;
 import dev.sweetberry.liberry.Liberry;
 import dev.sweetberry.liberry.content.block.LiberryFungusBlock;
 import dev.sweetberry.liberry.content.world.LiberrySaplingGenerator;
@@ -18,7 +22,11 @@ import net.minecraft.block.sign.WallHangingSignBlock;
 import net.minecraft.block.sign.WallSignBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.HangingSignItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.SignItem;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -59,62 +67,149 @@ public class WoodType {
 
 		id = transformId(baseId, "block/${orig}_planks");
 		var planks_id = id.toString();
-		context.blockstate(transformId(baseId, "blockstates/${orig}_planks"), new VariantBlockState()
+		context.blockstate(
+			transformId(baseId, "blockstates/${orig}_planks"), new VariantBlockState()
 			.with("", new BlockStateModel(id, false))
 		);
-		Template.MODEL_BLOCK.apply(context, id.withPrefix("models/"),
+		Template.MODEL_BLOCK.apply(
+			context, id.withPrefix("models/"),
 			"all", planks_id
 		);
-		Template.MODEL_DELEGATE.apply(context, transformId(baseId, "models/item/${orig}_planks"),
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/${orig}_planks"),
 			"parent", planks_id
 		);
 
 		id = transformId(baseId, "block/${orig}_stairs");
-		Template.BLOCKSTATE_STAIRS.apply(context, transformId(baseId, "blockstates/${orig}_stairs"),
+		Template.BLOCKSTATE_STAIRS.apply(
+			context, transformId(baseId, "blockstates/${orig}_stairs"),
 			"id", id.toString()
 		);
 		id = id.withPrefix("models/");
-		Template.MODEL_STAIRS.apply(context, id,
+		Template.MODEL_STAIRS.apply(
+			context, id,
 			"bottom", planks_id,
 			"side", planks_id,
 			"top", planks_id
 		);
-		Template.MODEL_STAIRS_INNER.apply(context, id.extendPath("_inner"),
+		Template.MODEL_STAIRS_INNER.apply(
+			context, id.extendPath("_inner"),
 			"bottom", planks_id,
 			"side", planks_id,
 			"top", planks_id
 		);
-		Template.MODEL_STAIRS_OUTER.apply(context, id.extendPath("_outer"),
+		Template.MODEL_STAIRS_OUTER.apply(
+			context, id.extendPath("_outer"),
 			"bottom", planks_id,
 			"side", planks_id,
 			"top", planks_id
 		);
-		Template.MODEL_DELEGATE.apply(context, transformId(baseId, "models/item/${orig}_stairs"),
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/${orig}_stairs"),
 			"parent", transformId(baseId, "block/${orig}_stairs").toString()
 		);
 
 		id = transformId(baseId, "block/${orig}_slab");
-		Template.BLOCKSTATE_SLAB.apply(context, transformId(baseId, "blockstates/${orig}_slab"),
+		Template.BLOCKSTATE_SLAB.apply(
+			context, transformId(baseId, "blockstates/${orig}_slab"),
 			"half", id.toString(),
 			"full", planks_id
 		);
 		id = id.withPrefix("models/");
-		Template.MODEL_SLAB.apply(context, id,
+		Template.MODEL_SLAB.apply(
+			context, id,
 			"bottom", planks_id,
 			"side", planks_id,
 			"top", planks_id
 		);
-		Template.MODEL_SLAB_TOP.apply(context, id.extendPath("_top"),
+		Template.MODEL_SLAB_TOP.apply(
+			context, id.extendPath("_top"),
 			"bottom", planks_id,
 			"side", planks_id,
 			"top", planks_id
 		);
-		Template.MODEL_DELEGATE.apply(context, transformId(baseId, "models/item/${orig}_slab"),
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/${orig}_slab"),
 			"parent", transformId(baseId, "block/${orig}_slab").toString()
 		);
 
+		Template.BLOCKSTATE_PILLAR.apply(
+			context, transformId(baseId, "blockstates/${orig}_"+logName),
+			"id", transformId(baseId, "block/${orig}_"+logName).toString()
+		);
+		Template.MODEL_PILLAR.apply(
+			context, transformId(baseId, "models/block/${orig}"+logName),
+			"top", transformId(baseId, "blocks/${orig}_"+logName+"_top").toString(),
+			"side", transformId(baseId, "blocks/${orig}_"+logName).toString()
+		);
+		Template.MODEL_PILLAR_HORIZONTAL.apply(
+			context, transformId(baseId, "models/block/${orig}"+logName+"horizontal"),
+			"top", transformId(baseId, "blocks/${orig}_"+logName+"_top").toString(),
+			"side", transformId(baseId, "blocks/${orig}_"+logName).toString()
+		);
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/${orig}"+logName),
+			"parent", transformId(baseId, "models/block/${orig}"+logName).toString()
+		);
 
-		// TODO: button, pressure plate, log, wood, door, trapdoor, signs, hanging signs, fence, fence gate, leaves, sapling
+		Template.BLOCKSTATE_PILLAR.apply(
+			context, transformId(baseId, "blockstates/stripped_${orig}_"+logName),
+			"id", transformId(baseId, "block/stripped_${orig}_"+logName).toString()
+		);
+		Template.MODEL_PILLAR.apply(
+			context, transformId(baseId, "models/block/stripped_${orig}"+logName),
+			"top", transformId(baseId, "blocks/stripped_${orig}_"+logName+"_top").toString(),
+			"side", transformId(baseId, "blocks/stripped_${orig}_"+logName).toString()
+		);
+		Template.MODEL_PILLAR_HORIZONTAL.apply(
+			context, transformId(baseId, "models/block/stripped_${orig}"+logName+"horizontal"),
+			"top", transformId(baseId, "blocks/stripped_${orig}_"+logName+"_top").toString(),
+			"side", transformId(baseId, "blocks/stripped_${orig}_"+logName).toString()
+		);
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/stripped_${orig}"+logName),
+			"parent", transformId(baseId, "models/block/stripped_${orig}"+logName).toString()
+		);
+
+		Template.BLOCKSTATE_PILLAR.apply(
+			context, transformId(baseId, "blockstates/${orig}_"+woodName),
+			"id", transformId(baseId, "block/${orig}_"+woodName).toString()
+		);
+		Template.MODEL_PILLAR.apply(
+			context, transformId(baseId, "models/block/${orig}"+woodName),
+			"top", transformId(baseId, "blocks/${orig}_"+woodName+"_top").toString(),
+			"side", transformId(baseId, "blocks/${orig}_"+woodName).toString()
+		);
+		Template.MODEL_PILLAR_HORIZONTAL.apply(
+			context, transformId(baseId, "models/block/${orig}"+woodName+"horizontal"),
+			"top", transformId(baseId, "blocks/${orig}_"+woodName+"_top").toString(),
+			"side", transformId(baseId, "blocks/${orig}_"+woodName).toString()
+		);
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/${orig}"+woodName),
+			"parent", transformId(baseId, "models/block/${orig}"+woodName).toString()
+		);
+
+		Template.BLOCKSTATE_PILLAR.apply(
+			context, transformId(baseId, "blockstates/stripped_${orig}_"+woodName),
+			"id", transformId(baseId, "block/stripped_${orig}_"+woodName).toString()
+		);
+		Template.MODEL_PILLAR.apply(
+			context, transformId(baseId, "models/block/stripped_${orig}"+woodName),
+			"top", transformId(baseId, "blocks/stripped_${orig}_"+woodName+"_top").toString(),
+			"side", transformId(baseId, "blocks/stripped_${orig}_"+woodName).toString()
+		);
+		Template.MODEL_PILLAR_HORIZONTAL.apply(
+			context, transformId(baseId, "models/block/stripped_${orig}"+woodName+"horizontal"),
+			"top", transformId(baseId, "blocks/stripped_${orig}_"+woodName+"_top").toString(),
+			"side", transformId(baseId, "blocks/stripped_${orig}_"+woodName).toString()
+		);
+		Template.MODEL_DELEGATE.apply(
+			context, transformId(baseId, "models/item/stripped_${orig}"+woodName),
+			"parent", transformId(baseId, "models/block/stripped_${orig}"+woodName).toString()
+		);
+
+		// TODO: button, pressure plate, door, trapdoor, signs, hanging signs, fence, fence gate, leaves, sapling
 	}
 
 	private static void registerContent(
@@ -168,7 +263,35 @@ public class WoodType {
 
 		context.registerBlockWithItem(transformId(baseId, isFungus ? "${orig}_fungus" : "${orig}_sapling"), isFungus ? createFungusBlock(baseId, fungusBaseBlock) : createSaplingBlock(baseId), baseItem);
 
-		// TODO: Boat
+		if (createBoat) {
+			var boat_key = TerraformBoatTypeRegistry.createKey(baseId);
+
+			var boat_item = context.registerItem(
+				transformId(baseId, "${orig}_boat"),
+				new TerraformBoatItem(boat_key, false, singleStack)
+			);
+			TerraformBoatItemHelper.registerBoatDispenserBehavior(
+				boat_item,
+				boat_key,
+				false
+			);
+
+			var chest_boat_item = context.registerItem(
+				transformId(baseId, "${orig}_chest_boat"),
+				new TerraformBoatItem(boat_key, true, singleStack)
+			);
+			TerraformBoatItemHelper.registerBoatDispenserBehavior(
+				chest_boat_item,
+				boat_key,
+				true
+			);
+
+			context.register(
+				TerraformBoatTypeRegistry.INSTANCE,
+				boat_key,
+				new TerraformBoatType.Builder().item(boat_item).chestItem(chest_boat_item).planks(planks.asItem()).build()
+			);
+		}
 	}
 
 	private static SaplingBlock createSaplingBlock(Identifier baseId) {
