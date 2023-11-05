@@ -11,9 +11,7 @@ import dev.sweetberry.liberry.datagen.*;
 import dev.sweetberry.liberry.datagen.blockstate.BlockStateModel;
 import dev.sweetberry.liberry.datagen.blockstate.VariantBlockState;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeBuilder;
-import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeBuilder;
-import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingBlock;
 import net.minecraft.block.sign.CeilingHangingSignBlock;
@@ -22,11 +20,7 @@ import net.minecraft.block.sign.WallHangingSignBlock;
 import net.minecraft.block.sign.WallSignBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.HangingSignItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.SignItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -138,18 +132,18 @@ public class WoodType {
 			"id", transformId(baseId, "block/${orig}_"+logName).toString()
 		);
 		Template.MODEL_PILLAR.apply(
-			context, transformId(baseId, "models/block/${orig}"+logName),
+			context, transformId(baseId, "models/block/${orig}_"+logName),
 			"top", transformId(baseId, "blocks/${orig}_"+logName+"_top").toString(),
 			"side", transformId(baseId, "blocks/${orig}_"+logName).toString()
 		);
 		Template.MODEL_PILLAR_HORIZONTAL.apply(
-			context, transformId(baseId, "models/block/${orig}"+logName+"horizontal"),
+			context, transformId(baseId, "models/block/${orig}_"+logName+"_horizontal"),
 			"top", transformId(baseId, "blocks/${orig}_"+logName+"_top").toString(),
 			"side", transformId(baseId, "blocks/${orig}_"+logName).toString()
 		);
 		Template.MODEL_DELEGATE.apply(
-			context, transformId(baseId, "models/item/${orig}"+logName),
-			"parent", transformId(baseId, "models/block/${orig}"+logName).toString()
+			context, transformId(baseId, "models/item/${orig}_"+logName),
+			"parent", transformId(baseId, "models/block/${orig}_"+logName).toString()
 		);
 
 		Template.BLOCKSTATE_PILLAR.apply(
@@ -157,18 +151,18 @@ public class WoodType {
 			"id", transformId(baseId, "block/stripped_${orig}_"+logName).toString()
 		);
 		Template.MODEL_PILLAR.apply(
-			context, transformId(baseId, "models/block/stripped_${orig}"+logName),
+			context, transformId(baseId, "models/block/stripped_${orig}_"+logName),
 			"top", transformId(baseId, "blocks/stripped_${orig}_"+logName+"_top").toString(),
 			"side", transformId(baseId, "blocks/stripped_${orig}_"+logName).toString()
 		);
 		Template.MODEL_PILLAR_HORIZONTAL.apply(
-			context, transformId(baseId, "models/block/stripped_${orig}"+logName+"horizontal"),
+			context, transformId(baseId, "models/block/stripped_${orig}_"+logName+"_horizontal"),
 			"top", transformId(baseId, "blocks/stripped_${orig}_"+logName+"_top").toString(),
 			"side", transformId(baseId, "blocks/stripped_${orig}_"+logName).toString()
 		);
 		Template.MODEL_DELEGATE.apply(
-			context, transformId(baseId, "models/item/stripped_${orig}"+logName),
-			"parent", transformId(baseId, "models/block/stripped_${orig}"+logName).toString()
+			context, transformId(baseId, "models/item/stripped_${orig}_"+logName),
+			"parent", transformId(baseId, "models/block/stripped_${orig}_"+logName).toString()
 		);
 
 		Template.BLOCKSTATE_PILLAR.apply(
@@ -176,18 +170,18 @@ public class WoodType {
 			"id", transformId(baseId, "block/${orig}_"+woodName).toString()
 		);
 		Template.MODEL_PILLAR.apply(
-			context, transformId(baseId, "models/block/${orig}"+woodName),
+			context, transformId(baseId, "models/block/${orig}_"+woodName),
 			"top", transformId(baseId, "blocks/${orig}_"+woodName+"_top").toString(),
 			"side", transformId(baseId, "blocks/${orig}_"+woodName).toString()
 		);
 		Template.MODEL_PILLAR_HORIZONTAL.apply(
-			context, transformId(baseId, "models/block/${orig}"+woodName+"horizontal"),
+			context, transformId(baseId, "models/block/${orig}_"+woodName+"_horizontal"),
 			"top", transformId(baseId, "blocks/${orig}_"+woodName+"_top").toString(),
 			"side", transformId(baseId, "blocks/${orig}_"+woodName).toString()
 		);
 		Template.MODEL_DELEGATE.apply(
-			context, transformId(baseId, "models/item/${orig}"+woodName),
-			"parent", transformId(baseId, "models/block/${orig}"+woodName).toString()
+			context, transformId(baseId, "models/item/${orig}_"+woodName),
+			"parent", transformId(baseId, "models/block/${orig}_"+woodName).toString()
 		);
 
 		Template.BLOCKSTATE_PILLAR.apply(
@@ -200,16 +194,33 @@ public class WoodType {
 			"side", transformId(baseId, "blocks/stripped_${orig}_"+woodName).toString()
 		);
 		Template.MODEL_PILLAR_HORIZONTAL.apply(
-			context, transformId(baseId, "models/block/stripped_${orig}"+woodName+"horizontal"),
+			context, transformId(baseId, "models/block/stripped_${orig}_"+woodName+"_horizontal"),
 			"top", transformId(baseId, "blocks/stripped_${orig}_"+woodName+"_top").toString(),
 			"side", transformId(baseId, "blocks/stripped_${orig}_"+woodName).toString()
 		);
 		Template.MODEL_DELEGATE.apply(
-			context, transformId(baseId, "models/item/stripped_${orig}"+woodName),
-			"parent", transformId(baseId, "models/block/stripped_${orig}"+woodName).toString()
+			context, transformId(baseId, "models/item/stripped_${orig}_"+woodName),
+			"parent", transformId(baseId, "models/block/stripped_${orig}_"+woodName).toString()
 		);
 
-		// TODO: button, pressure plate, door, trapdoor, signs, hanging signs, fence, fence gate, leaves, sapling
+		Template.BLOCKSTATE_BUTTON.apply(
+			context, transformId(baseId, "blockstates/${orig}_button"),
+			"id", transformId(baseId, "block/${orig}_button").toString()
+		);
+		Template.MODEL_BUTTON.apply(
+			context, transformId(baseId, "block/${orig}_button"),
+			"all", transformId(baseId, "block/${orig}_planks").toString()
+		);
+		Template.MODEL_BUTTON_PRESSED.apply(
+			context, transformId(baseId, "block/${orig}_button_pressed"),
+			"all", transformId(baseId, "block/${orig}_planks").toString()
+		);
+		Template.MODEL_BUTTON_INVENTORY.apply(
+			context, transformId(baseId, "block/${orig}_button_inventory"),
+			"all", transformId(baseId, "block/${orig}_planks").toString()
+		);
+
+		// TODO: pressure plate, door, trapdoor, signs, hanging signs, fence, fence gate, leaves, sapling
 	}
 
 	private static void registerContent(

@@ -111,6 +111,26 @@ public record Template(Identifier id, ResourceType type) {
 	 * */
 	public static final Template BLOCKSTATE_BUTTON = new Template(Liberry.id("datagen/blockstate/button"), ResourceType.CLIENT_RESOURCES);
 
+	/**
+	 * Properties:
+	 * <br>
+	 * - all: The ID for the texture (ex: modid:block/some_block)
+	 * */
+	public static final Template MODEL_BUTTON = new Template(Liberry.id("datagen/models/button"), ResourceType.CLIENT_RESOURCES);
+
+	/**
+	 * Properties:
+	 * <br>
+	 * - all: The ID for the texture (ex: modid:block/some_block)
+	 * */
+	public static final Template MODEL_BUTTON_PRESSED = new Template(Liberry.id("datagen/models/button_pressed"), ResourceType.CLIENT_RESOURCES);
+
+	/**
+	 * Properties:
+	 * <br>
+	 * - all: The ID for the texture (ex: modid:block/some_block)
+	 * */
+	public static final Template MODEL_BUTTON_INVENTORY = new Template(Liberry.id("datagen/models/button_inventory"), ResourceType.CLIENT_RESOURCES);
 
 
 	public void apply(ResourceContext context, Identifier path, String... properties) {

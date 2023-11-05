@@ -1,11 +1,11 @@
 package dev.sweetberry.liberry.datagen.tags;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import dev.sweetberry.liberry.Liberry;
-import dev.sweetberry.liberry.config.LiberryConfig;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.tag.TagManagerLoader;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.quiltmc.qsl.resource.loader.api.InMemoryResourcePack;
@@ -18,11 +18,18 @@ import java.util.Map;
 public class TagData {
 	public static Map<Identifier, List<Identifier>> tags = new HashMap<>();
 
-	public static void put(String type, Identifier... values) {
-		var type_id = new Identifier(type);
-		var tags = TagData.tags.getOrDefault(type_id, new ArrayList<>());
+	public static void put(Identifier type, Identifier... values) {
+		var tags = TagData.tags.getOrDefault(type, new ArrayList<>());
 		tags.addAll(List.of(values));
-		TagData.tags.put(type_id, tags);
+		TagData.tags.put(type, tags);
+	}
+
+	public static void put(String type, Identifier... values) {
+		put(new Identifier(type), values);
+	}
+
+	public static <T> void put(TagKey<T> type, Identifier... values) {
+		put(type.id().withPrefix(TagManagerLoader.getRegistryDirectory(type.registry()).substring(5) + "/"), values);
 	}
 
 	public static void addToPack(InMemoryResourcePack pack) {

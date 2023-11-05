@@ -13,6 +13,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
@@ -50,7 +51,7 @@ public class LiberryTestMod implements ModInitializer {
 				"parent", block_model_id
 			);
 
-			TagData.put("blocks/mineable/pickaxe", block_id);
+			TagData.put(BlockTags.PICKAXE_MINEABLE, block_id);
 		});
 
 		Registry.register(DataGeneratorUtils.REGISTRY, id, generator);
