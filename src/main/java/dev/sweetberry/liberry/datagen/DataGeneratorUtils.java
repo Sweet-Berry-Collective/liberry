@@ -23,11 +23,11 @@ public class DataGeneratorUtils {
 
 	public static void registerRegistry() {
 		// Hacky things to get it to compile. :3
-//		Registry.register((Registry<Registry<?>>)Registries.REGISTRY, REGISTRY_ID, REGISTRY);
+		Registry.register((Registry<Registry<?>>)Registries.REGISTRY, REGISTRY_ID, REGISTRY);
 	}
 
 	public static DataGenerator registerGenerator(DataGenerator generator) {
-		System.out.println("test");
+		System.out.println(generator.id);
 		return Registry.register(REGISTRY, generator.id, generator);
 	}
 
@@ -47,6 +47,7 @@ public class DataGeneratorUtils {
 			public void reload(ResourceManager manager) {
 				PACK.clear(type);
 				REGISTRY.forEach(generator -> {
+					System.out.println(generator.id);
 					generator.resourceContexts.forEach(resourceContext ->
 						resourceContext.resources
 							.forEach(it -> {

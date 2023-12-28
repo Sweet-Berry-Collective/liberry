@@ -55,7 +55,7 @@ public class LiberryTestMod implements ModInitializer {
 		});
 		System.out.println("test 2");
 
-		Registry.register(DataGeneratorUtils.REGISTRY, id, generator);
+		DataGeneratorUtils.registerGenerator(generator);
 
 		System.out.println("test 3");
 		generator.exclude("owo");

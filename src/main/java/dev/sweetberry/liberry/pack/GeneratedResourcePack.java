@@ -98,11 +98,8 @@ public class GeneratedResourcePack implements ResourcePack {
 
 	@Nullable
 	@Override
-	public <T> T parseMetadata(ResourceMetadataReader<T> metaReader) throws IOException {
-		var json = new JsonObject();
-		json.addProperty("description", DESCRIPTION);
-		json.addProperty("pack_format", 1);
-		return metaReader.fromJson(json);
+	public <T> T parseMetadata(ResourceMetadataReader<T> metaReader) {
+		return null;
 	}
 
 	@Override
