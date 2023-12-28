@@ -4,11 +4,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import dev.sweetberry.liberry.Liberry;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
+import dev.sweetberry.liberry.pack.GeneratedResourcePack;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.registry.tag.TagManagerLoader;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import org.quiltmc.qsl.resource.loader.api.InMemoryResourcePack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,18 +32,18 @@ public class TagData {
 		put(type.id().withPrefix(TagManagerLoader.getRegistryDirectory(type.registry()).substring(5) + "/"), values);
 	}
 
-	public static void addToPack(InMemoryResourcePack pack) {
+	public static void addToPack(GeneratedResourcePack pack) {
 		for (var type : tags.keySet()) {
 			var value = new JsonObject();
 			value.add("replace", new JsonPrimitive(false));
-			value.add("values", DataGeneratorUtils.gson.toJsonTree(
+			value.add("values", DataGeneratorUtils.GSON.toJsonTree(
 				tags.get(type)
 					.stream()
 					.map(Identifier::toString)
 					.toList()
 			));
 			var id = type.withPrefix("tags/").extendPath(".json");
-			var data = DataGeneratorUtils.gson.toJson(value);
+			var data = DataGeneratorUtils.GSON.toJson(value);
 			Liberry.debugLog(id.toString() + " ->\n" + data);
 			pack.putText(ResourceType.SERVER_DATA, id, data);
 		}

@@ -2,29 +2,33 @@ package dev.sweetberry.liberry;
 
 import dev.sweetberry.liberry.config.LiberryConfig;
 import dev.sweetberry.liberry.datagen.DataGeneratorUtils;
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.loader.api.QuiltLoader;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class Liberry implements ModInitializer {
 	public static final Logger logger = LoggerFactory.getLogger("liberry");
 	@Override
-	public void onInitialize(ModContainer mod) {
-		LiberryConfig.poke();
+	public void onInitialize() {
+		try {
+			LiberryConfig.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		DataGeneratorUtils.registerRegistry();
 		DataGeneratorUtils.registerReloaders();
 	}
 
 	public static void debugLog(String data) {
-		if (LiberryConfig.instance.debug_mode.value() || QuiltLoader.isDevelopmentEnvironment())
+		if (LiberryConfig.isDebugMode())
 			Liberry.logger.info("[Debug Log] "+data);
 	}
 
 	public static boolean isExcluded(Identifier generator, String namespace) {
-		var exclusions = LiberryConfig.instance.datagen_exclusions.value().get(generator.toString());
+		var exclusions = LiberryConfig.getExclusions().get(generator.toString());
 		if (exclusions == null)
 			return false;
 		return exclusions.contains(namespace);

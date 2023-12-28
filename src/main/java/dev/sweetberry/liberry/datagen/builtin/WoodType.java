@@ -10,8 +10,11 @@ import dev.sweetberry.liberry.content.world.LiberrySaplingGenerator;
 import dev.sweetberry.liberry.datagen.*;
 import dev.sweetberry.liberry.datagen.blockstate.BlockStateModel;
 import dev.sweetberry.liberry.datagen.blockstate.VariantBlockState;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.BlockSetTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.block.type.WoodTypeBuilder;
+import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.sapling.SaplingBlock;
 import net.minecraft.block.sign.CeilingHangingSignBlock;
@@ -25,9 +28,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.Nullable;
-import org.quiltmc.qsl.block.content.registry.api.BlockContentRegistries;
-import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
-import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.HashMap;
 
@@ -232,15 +232,15 @@ public class WoodType {
 		@Nullable Block fungusBaseBlock,
 		RegistrationContext context
 	) {
-		final var baseBlock = QuiltBlockSettings.copyOf(Blocks.OAK_PLANKS).sounds(sounds).mapColor(wood);
-		final var nonCollidable = QuiltBlockSettings.copyOf(baseBlock).collidable(false);
-		final var nonOpaque = QuiltBlockSettings.copyOf(baseBlock).nonOpaque();
-		final var hanging = QuiltBlockSettings
+		final var baseBlock = FabricBlockSettings.copyOf(Blocks.OAK_PLANKS).sounds(sounds).mapColor(wood);
+		final var nonCollidable = FabricBlockSettings.copyOf(baseBlock).collidable(false);
+		final var nonOpaque = FabricBlockSettings.copyOf(baseBlock).nonOpaque();
+		final var hanging = FabricBlockSettings
 			.copyOf(Blocks.OAK_HANGING_SIGN)
 			.sounds(sounds)
 			.mapColor(wood);
-		final var baseItem = new QuiltItemSettings();
-		final var singleStack = new QuiltItemSettings().maxCount(1);
+		final var baseItem = new FabricItemSettings();
+		final var singleStack = new FabricItemSettings().maxCount(1);
 		final var isFungus = fungusBaseBlock != null;
 
 		var blockSetType = new BlockSetTypeBuilder().register(baseId);
@@ -308,7 +308,7 @@ public class WoodType {
 	private static SaplingBlock createSaplingBlock(Identifier baseId) {
 		return new SaplingBlock(
 			new LiberrySaplingGenerator(baseId),
-			QuiltBlockSettings
+			FabricBlockSettings
 				.copyOf(Blocks.OAK_SAPLING)
 				.noCollision()
 				.ticksRandomly()
@@ -319,7 +319,7 @@ public class WoodType {
 
 	private static FungusBlock createFungusBlock(Identifier baseId, Block base) {
 		return new LiberryFungusBlock(
-			QuiltBlockSettings
+			FabricBlockSettings
 				.copyOf(Blocks.CRIMSON_FUNGUS)
 				.breakInstantly()
 				.noCollision()
@@ -330,15 +330,15 @@ public class WoodType {
 		);
 	}
 
-	private static void createLogBlocks(RegistrationContext context, Identifier baseId, MapColor top, MapColor side, MapColor stripped, BlockSoundGroup sounds, QuiltItemSettings item) {
+	private static void createLogBlocks(RegistrationContext context, Identifier baseId, MapColor top, MapColor side, MapColor stripped, BlockSoundGroup sounds, FabricItemSettings item) {
 		var log = context.registerBlockWithItem(baseId, createLogBlock(top, side, sounds), item);
 		var stripped_log = context.registerBlockWithItem(transformId(baseId, "stripped_${orig}"), createLogBlock(stripped, stripped, sounds), item);
-		BlockContentRegistries.STRIPPABLE.put(log, stripped_log);
+		StrippableBlockRegistry.register(log, stripped_log);
 	}
 
 	private static Block createLogBlock(MapColor top, MapColor side, BlockSoundGroup sounds) {
 		return new PillarBlock(
-			QuiltBlockSettings.copyOf(Blocks.OAK_LOG)
+			FabricBlockSettings.copyOf(Blocks.OAK_LOG)
 				.strength(2.0F)
 				.sounds(sounds)
 				.mapColor((state) -> state.get(PillarBlock.AXIS) == Direction.Axis.Y ? top : side)
@@ -348,9 +348,9 @@ public class WoodType {
 	private static Block createLeavesBlock(boolean isFungus) {
 		return
 			isFungus ?
-				new Block(QuiltBlockSettings.copyOf(Blocks.NETHER_WART_BLOCK)) :
+				new Block(FabricBlockSettings.copyOf(Blocks.NETHER_WART_BLOCK)) :
 				new LeavesBlock(
-					QuiltBlockSettings
+					FabricBlockSettings
 						.copyOf(Blocks.OAK_LEAVES)
 						.strength(0.2F)
 						.ticksRandomly()

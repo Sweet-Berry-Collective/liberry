@@ -14,6 +14,6 @@ public class VariantBlockState implements BlockStateData {
 
 	@Override
 	public String toString() {
-		return DataGeneratorUtils.gson.toJson(this);
+		return DataGeneratorUtils.GSON.toJson(this);
 	}
 }

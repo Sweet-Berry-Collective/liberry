@@ -7,6 +7,9 @@ import dev.sweetberry.liberry.datagen.blockstate.BlockStateModel;
 import dev.sweetberry.liberry.datagen.blockstate.VariantBlockState;
 import dev.sweetberry.liberry.datagen.builtin.WoodType;
 import dev.sweetberry.liberry.datagen.tags.TagData;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
@@ -17,18 +20,15 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
-import org.quiltmc.qsl.block.extensions.api.QuiltBlockSettings;
-import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 public class LiberryTestMod implements ModInitializer {
 	@Override
-	public void onInitialize(ModContainer mod) {
+	public void onInitialize() {
+		System.out.println("test 1");
 		var id = new Identifier("liberry_test", "test_generator");
 		var generator = new DataGenerator(id, (baseId, metadata, registrationContext, resourceContext) -> {
-			var block = new Block(QuiltBlockSettings.copyOf(Blocks.OAK_PLANKS));
-			var block_item = new BlockItem(block, new QuiltItemSettings());
+			var block = new Block(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS));
+			var block_item = new BlockItem(block, new FabricItemSettings());
 			var block_id = new Identifier("liberry_test", baseId.toString().replace(':', '/'));
 
 			registrationContext.register(Registries.BLOCK, block_id, block, true);
@@ -53,13 +53,17 @@ public class LiberryTestMod implements ModInitializer {
 
 			TagData.put(BlockTags.PICKAXE_MINEABLE, block_id);
 		});
+		System.out.println("test 2");
 
 		Registry.register(DataGeneratorUtils.REGISTRY, id, generator);
 
+		System.out.println("test 3");
 		generator.exclude("owo");
 
 		generator.apply(new Identifier("owo", "uwu"));
 		generator.apply(new Identifier("uwu", "owo"));
+
+		System.out.println("test 4");
 
 		WoodType.create(
 			new Identifier("liberry_test", "test_wood"),
@@ -69,5 +73,7 @@ public class LiberryTestMod implements ModInitializer {
 			false,
 			null
 		);
+
+		System.out.println("test 5");
 	}
 }

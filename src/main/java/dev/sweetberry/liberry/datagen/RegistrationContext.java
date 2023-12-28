@@ -1,5 +1,6 @@
 package dev.sweetberry.liberry.datagen;
 
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -7,7 +8,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import org.quiltmc.qsl.item.setting.api.QuiltItemSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,11 @@ import java.util.List;
 public class RegistrationContext {
 	public List<RegistryEntryHolder<?>> entries = new ArrayList<>();
 
-	public Block registerBlockWithItem(Identifier id, Block block, QuiltItemSettings settings) {
+	public Block registerBlockWithItem(Identifier id, Block block, FabricItemSettings settings) {
 		return registerBlockWithItem(id, block, settings, false);
 	}
 
-	public Block registerBlockWithItem(Identifier id, Block block, QuiltItemSettings settings, boolean shouldBeTransparent) {
+	public Block registerBlockWithItem(Identifier id, Block block, FabricItemSettings settings, boolean shouldBeTransparent) {
 		registerBlock(id, block, shouldBeTransparent);
 		registerItem(id, new BlockItem(block, settings));
 		return block;

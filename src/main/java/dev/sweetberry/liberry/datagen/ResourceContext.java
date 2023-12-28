@@ -1,12 +1,11 @@
 package dev.sweetberry.liberry.datagen;
 
 import dev.sweetberry.liberry.Liberry;
-import dev.sweetberry.liberry.config.LiberryConfig;
 import dev.sweetberry.liberry.datagen.blockstate.BlockStateData;
+import dev.sweetberry.liberry.pack.GeneratedResourcePack;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import org.quiltmc.qsl.resource.loader.api.InMemoryResourcePack;
-import org.quiltmc.qsl.resource.loader.api.ResourcePackRegistrationContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,8 +41,8 @@ public class ResourceContext {
 		ResourceType type();
 
 		void applyTo(
-			ResourcePackRegistrationContext context,
-			InMemoryResourcePack pack
+			ResourceManager context,
+			GeneratedResourcePack pack
 		);
 	}
 
@@ -54,8 +53,8 @@ public class ResourceContext {
 	) implements DatagenResource {
 		@Override
 		public void applyTo(
-			ResourcePackRegistrationContext context,
-			InMemoryResourcePack pack
+			ResourceManager context,
+			GeneratedResourcePack pack
 		) {
 			var path = this.path.extendPath(".json");
 			Liberry.debugLog(path + " -> \n" + data);
@@ -70,9 +69,9 @@ public class ResourceContext {
 		Map<String, String> properties
 	) implements DatagenResource {
 		@Override
-		public void applyTo(ResourcePackRegistrationContext context, InMemoryResourcePack pack) {
+		public void applyTo(ResourceManager context, GeneratedResourcePack pack) {
 			try {
-				var templateString = new String(context.resourceManager().open(template.extendPath(".json")).readAllBytes());
+				var templateString = new String(context.open(template.extendPath(".json")).readAllBytes());
 				for (var key : properties.keySet())
 					templateString = templateString.replace("${" + key + "}", properties.get(key));
 				var path = this.path.extendPath(".json");

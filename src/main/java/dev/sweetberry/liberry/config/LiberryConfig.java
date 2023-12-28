@@ -1,33 +1,40 @@
 package dev.sweetberry.liberry.config;
 
-import dev.sweetberry.liberry.Liberry;
-import net.minecraft.util.Identifier;
-import org.quiltmc.config.api.ReflectiveConfig;
-import org.quiltmc.config.api.annotations.Comment;
-import org.quiltmc.config.api.values.TrackedValue;
-import org.quiltmc.config.api.values.ValueList;
-import org.quiltmc.config.api.values.ValueMap;
-import org.quiltmc.loader.api.QuiltLoader;
+import net.fabricmc.loader.api.FabricLoader;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LiberryConfig extends ReflectiveConfig {
-	public static final LiberryConfig instance = ConfigHelper.create(Liberry.id("config"), LiberryConfig.class);
+public class LiberryConfig {
+	private static final LiberryConfig INSTANCE = new LiberryConfig();
 
-	@Comment(value = {
-		"Represents a list of mods to ignore for a specific data generator.",
-		"Example:",
-		"datagen_exclusions: {",
-		"  \"somemod:some_generator\": [ \"some_modid\" ]",
-		"}"
-	})
-	public final TrackedValue<ValueMap<ValueList<String>>> datagen_exclusions = value(ValueMap.builder(ValueList.create("")).build());
+	private final Map<String, List<String>> datagenExclusions = new HashMap<>();
 
-	@Comment("Whether or not to debug print data generation")
-	public final TrackedValue<Boolean> debug_mode = value(false);
+	private boolean debugMode = false;
 
-	public static void poke() {}
+	public static Map<String, List<String>> getExclusions() {
+		return INSTANCE.datagenExclusions;
+	}
+	public static boolean isDebugMode() {
+		return INSTANCE.debugMode || FabricLoader.getInstance().isDevelopmentEnvironment();
+	}
+
+	public static Path getConfigPath() {
+		return FabricLoader.getInstance().getConfigDir().resolve("liberry.json5");
+	}
+
+	public static void load() throws IOException {
+		var path = getConfigPath();
+		var f = path.toFile();
+		if (!f.exists())
+			write();
+		// TODO
+	}
+
+	public static void write() throws IOException {
+		// TODO
+	}
 }
